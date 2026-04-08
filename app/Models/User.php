@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens; // ✅ TAMBAHAN
 use App\Models\Novel;
 use App\Models\Favorite;
 use App\Models\Comment;
+use App\Models\Review;
 
 class User extends Authenticatable
 {

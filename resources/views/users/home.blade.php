@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ asset('users/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('users/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('users/css/elegant-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('users/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('users/css/slicknav.min.css') }}">
     <link rel="stylesheet" href="{{ asset('users/css/style.css') }}">
 
@@ -19,7 +18,6 @@
             color:#f5f5f5; 
         }
 
-        /* CERAHKAN SEMUA TEKS */
         h1,h2,h3,h4,h5,h6,
         .navbar-brand strong,
         .nav-link,
@@ -71,16 +69,104 @@
         .account-link:hover { background: #222; }
         .account-link.logout { color: #ff7b7b; }
 
-        /* NOVEL */
-        .novel-card img {
-            border-radius: 6px;
-            height: 220px;
-            object-fit: cover;
+        /* NOVEL GRID */
+        .novel-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 14px;
         }
-        .novel-title {
-            font-size: .85rem;
-            margin-top: 6px;
-            text-align: center;
+
+        @media (max-width: 992px) {
+            .novel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 600px) {
+            .novel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        .novel-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .novel-cover-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        .novel-cover-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.25s ease;
+        }
+
+        .novel-card:hover .novel-cover-wrap img {
+            transform: scale(1.05);
+        }
+
+        .badge-up {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: #e8380d;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .novel-name {
+            font-size: 12px !important;
+            font-weight: 500;
+            color: #ffffff !important;
+            line-height: 1.3;
+            margin: 6px 0 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .chapter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .chapter-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1c1c1c;
+            border-radius: 4px;
+            padding: 3px 7px;
+            border: 1px solid #2a2a2a;
+            text-decoration: none;
+        }
+
+        .chapter-row:hover {
+            background: #252525;
+        }
+
+        .chapter-num {
+            font-size: 11px !important;
+            color: #cccccc !important;
+        }
+
+        .chapter-time {
+            font-size: 10px !important;
+            color: #888888 !important;
         }
 
         .notice-login {
@@ -93,6 +179,48 @@
             font-size: 14px;
             color: #f0f0f0;
         }
+        /* DEFAULT */
+.notice-login {
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    animation: fadeSlide 0.5s ease;
+}
+
+/* BELUM LOGIN */
+.notice-guest {
+    background: #151515;
+    border-left: 4px solid #7c4dff;
+}
+
+/* SUDAH LOGIN */
+.notice-user {
+    background: linear-gradient(135deg, #1f4037, #99f2c8);
+    border-left: 4px solid #00c853;
+    color: #0b0c10;
+}
+
+/* ICON WARNA */
+.notice-user i {
+    color: #00e676;
+}
+
+/* ANIMASI */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.notice-user {
+    box-shadow: 0 0 10px rgba(0, 255, 150, 0.3);
+}
     </style>
 </head>
 <body>
@@ -134,7 +262,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('genre.index') }}">Genre</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.library') }}">Library</a>
                     </li>
@@ -186,13 +313,25 @@
 
 <!-- NOTICE -->
 <div class="container mt-3">
-    <div class="notice-login">
+    @guest
+    <div class="notice-login notice-guest">
         <i class="fa fa-info-circle"></i>
         <span>
             Kamu bisa membaca novel tanpa login.
             Login hanya untuk <strong>Favorite</strong>.
         </span>
     </div>
+    @endguest
+
+    @auth
+    <div class="notice-login notice-user">
+        <i class="fa fa-check-circle"></i>
+        <span>
+            Selamat datang, <strong>{{ Auth::user()->name }}</strong> 🎉  
+            Sekarang kamu bisa menyimpan novel ke <strong>Favorite</strong>!
+        </span>
+    </div>
+    @endauth
 </div>
 
 <!-- NOVEL LIST -->
@@ -200,26 +339,39 @@
     <div class="container">
         <h4 class="mb-3">Novel Terbaru</h4>
 
-        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+        <div class="novel-grid">
             @foreach ($novels as $novel)
-                <div class="col">
-                    <div class="novel-card">
+                <div class="novel-card">
+                    <div class="novel-cover-wrap">
+                        <span class="badge-up">UP</span>
                         <a href="{{ route('user.novel.show', $novel->id) }}">
                             <img src="{{ $novel->cover
                                 ? asset('storage/'.$novel->cover)
                                 : asset('users/img/no-cover.jpg') }}"
-                                 class="img-fluid">
+                                 alt="{{ $novel->title }}">
                         </a>
-                        <div class="novel-title">{{ $novel->title }}</div>
+                    </div>
+
+                    <div class="novel-name">{{ $novel->title }}</div>
+
+                    <div class="chapter-list">
+                        @foreach ($novel->chapters->sortByDesc('created_at')->take(2) as $chapter)
+                            <a href="{{ route('user.novel.read', [$novel->id, $chapter->id]) }}" class="chapter-row">
+                                <span class="chapter-num">Chapter {{ $chapter->chapter_number }}</span>
+                                <span class="chapter-time">{{ $chapter->created_at->diffForHumans() }}</span>
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
         </div>
+
     </div>
 </section>
 
 <!-- JS -->
-<script src="{{ asset('users/js/bootstrap.min.js') }}"></cript>
+<script src="{{ asset('users/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('users/js/jquery-3.3.1.min.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const toggle = document.getElementById('accountToggle');

@@ -78,4 +78,26 @@ class ChapterController extends Controller
         return redirect()->route('admin.chapter.index')
             ->with('success', 'Chapter berhasil dihapus');
     }
+    public function getByNovel($novelId)
+{
+    $chapters = Chapter::where('novel_id', $novelId)
+        ->orderBy('chapter_number')
+        ->get();
+
+    return response()->json([
+        'data' => $chapters
+    ]);
+}
+public function showApi($id)
+{
+    $chapter = Chapter::find($id);
+
+    if (!$chapter) {
+        return response()->json([
+            'message' => 'Chapter tidak ditemukan'
+        ], 404);
+    }
+
+    return response()->json($chapter);
+}
 }
