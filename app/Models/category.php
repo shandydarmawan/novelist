@@ -29,7 +29,6 @@ class Category extends Model
         });
     }
 
-    // Satu kategori punya banyak novel
     public function novels()
     {
         return $this->hasMany(Novel::class);

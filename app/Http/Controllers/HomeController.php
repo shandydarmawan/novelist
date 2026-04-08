@@ -2,31 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Novel;
-use App\Models\Category; // ✅ TAMBAHAN
 use Illuminate\Http\Request;
+use App\Models\Novel;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // ambil semua novel dari admin
-        $novels = Novel::latest()->get();
+        // ambil novel + relasi
+        $novels = Novel::with(['author', 'category'])
+            ->latest()
+            ->get();
 
-        // ✅ TAMBAHAN: ambil semua kategori/genre
-        $categories = Category::orderBy('name')->get();
+        // ambil kategori
+        $categories = Category::orderBy('name', 'asc')->get();
 
-        // ✅ TAMBAHKAN categories (tidak menghapus yang lama)
-        return view('users.home', compact('novels', 'categories'));
+        return view('users.home', [
+            'novels' => $novels,
+            'categories' => $categories
+        ]);
     }
 
     public function explore()
     {
         $novels = Novel::with(['author', 'category'])
-            ->orderBy('updated_at', 'desc')
+            ->latest('updated_at')
             ->get();
 
-        return view('users.explore', compact('novels'));
+        return view('users.explore', [
+            'novels' => $novels
+        ]);
     }
 
     /* ===============================
@@ -36,10 +42,14 @@ class HomeController extends Controller
     {
         $category = Category::where('slug', $slug)->firstOrFail();
 
-        $novels = Novel::where('category_id', $category->id)
+        $novels = Novel::with(['author', 'category'])
+            ->where('category_id', $category->id)
             ->latest()
             ->get();
 
-        return view('users.genre', compact('category', 'novels'));
+        return view('users.genre', [
+            'category' => $category,
+            'novels' => $novels
+        ]);
     }
 }
