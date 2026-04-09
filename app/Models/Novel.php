@@ -11,7 +11,7 @@ class Novel extends Model
 
     protected $fillable = [
         'title',
-        'category_id',
+        'category_id', // tetap dipakai (opsional utama)
         'author_id',
         'cover',
         'synopsis',
@@ -23,37 +23,45 @@ class Novel extends Model
 
     /* ================= RELATIONS ================= */
 
-    // Novel milik satu kategori
+    // 🔥 Lama (tetap ada)
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    // Novel milik satu author (user)
-   public function author()
-{
-    return $this->belongsTo(Author::class);
-}
-
-    // Novel punya banyak chapter
-    public function chapters()
+    // 🔥 BARU (multi genre)
+    public function categories()
     {
-    return $this->hasMany(Chapter::class)->orderBy('chapter_number');
+        return $this->belongsToMany(Category::class, 'category_novel');
     }
 
-    // Novel punya banyak komentar
+    // Author
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
+    }
+
+    // Chapters
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class)->orderBy('chapter_number');
+    }
+
+    // Comments
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    // Novel bisa difavoritkan banyak user
+    // Favorites
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
     }
+
+    // Reviews
     public function reviews()
     {
-    return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
 }

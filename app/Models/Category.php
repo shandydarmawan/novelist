@@ -29,8 +29,15 @@ class Category extends Model
         });
     }
 
+    // 🔥 Lama (tetap)
     public function novels()
     {
         return $this->hasMany(Novel::class);
+    }
+
+    // 🔥 BARU (multi genre)
+    public function novelsMany()
+    {
+        return $this->belongsToMany(Novel::class, 'category_novel');
     }
 }

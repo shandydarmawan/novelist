@@ -39,6 +39,18 @@
                 </select>
             </div>
 
+            {{-- 🔥 TAMBAHAN MULTI GENRE --}}
+            <div class="mb-3">
+                <label>Genre Tambahan</label><br>
+
+                @foreach($categories as $category)
+                    <label>
+                        <input type="checkbox" name="category_ids[]" value="{{ $category->id }}">
+                        {{ $category->name }}
+                    </label><br>
+                @endforeach
+            </div>
+
             {{-- STATUS --}}
             <div class="mb-3">
                 <label>Status</label>

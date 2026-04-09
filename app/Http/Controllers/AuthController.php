@@ -15,27 +15,27 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => ['required','email'],
-        'password' => ['required'],
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => ['required','email'],
+            'password' => ['required'],
+        ]);
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        
-        // Tambahkan ini
-        if (Auth::user()->role === 'admin') {
-            return redirect('/admin/novel');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            
+            // 🔥 redirect sesuai role
+            if (Auth::user()->role === 'admin') {
+                return redirect('/admin/novel');
+            }
+            
+            return redirect('/');
         }
-        
-        return redirect()->intended('/');
-    }
 
-    return back()->withErrors([
-        'email' => 'Email atau password salah',
-    ]);
-}
+        return back()->withErrors([
+            'email' => 'Email atau password salah',
+        ]);
+    }
 
     public function registerForm()
     {
@@ -54,11 +54,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // 🔥 tambahkan ini
         ]);
 
-        Auth::login($user);
+        // ❌ HAPUS auto login (biar tidak langsung masuk)
+        // Auth::login($user);
 
-        return redirect('/');
+        // 🔥 redirect ke login
+        return redirect('/login')->with('success', 'Registrasi berhasil, silakan login');
     }
 
     public function logout(Request $request)
