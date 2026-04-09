@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,19 +14,20 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-   ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function (Middleware $middleware): void {
 
-    $middleware->append(\App\Http\Middleware\Cors::class); // ✅ FIX
+        $middleware->append(\App\Http\Middleware\Cors::class);
 
-    $middleware->alias([
-        'admin' => AdminMiddleware::class,
-    ]);
+        $middleware->alias([
+            'admin' => AdminMiddleware::class,
+            'isAdmin' => IsAdmin::class,
+        ]);
 
-    $middleware->group('api', [
-        EnsureFrontendRequestsAreStateful::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    ]);
-})
+        $middleware->group('api', [
+            EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })

@@ -15,21 +15,27 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required'],
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => ['required','email'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        
+        // Tambahkan ini
+        if (Auth::user()->role === 'admin') {
+            return redirect('/admin/novel');
         }
-
-        return back()->withErrors([
-            'email' => 'Email atau password salah',
-        ]);
+        
+        return redirect()->intended('/');
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+}
 
     public function registerForm()
     {

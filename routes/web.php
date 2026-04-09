@@ -56,11 +56,9 @@ Route::post('/review', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('review.store');
 
-
 Route::delete('/review/{id}', [ReviewController::class, 'destroy'])
     ->name('review.delete');
 
-    
 /*
 |--------------------------------------------------------------------------
 | LIBRARY (WAJIB LOGIN)
@@ -112,7 +110,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 | ADMIN
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'isAdmin'])->group(function () {
 
     // NOVEL
     Route::resource('novel', NovelController::class);
