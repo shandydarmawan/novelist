@@ -87,6 +87,47 @@ body { font-family: 'Inter', sans-serif; }
 }
 .btn-baca:hover { background: #5a32c2; }
 
+/* 🔥 FAVORITE BUTTON KEREN 🔥 */
+.btn-favorite {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: #fff !important;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.btn-favorite:hover {
+    border-color: #ff6b6b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,107,107,0.3);
+}
+
+.btn-favorite.favorited {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+    border-color: #ff6b6b;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(255,107,107,0.4);
+    animation: pulse-fav 1.5s infinite;
+}
+
+@keyframes pulse-fav {
+    0%, 100% { box-shadow: 0 8px 20px rgba(255,107,107,0.4); }
+    50% { box-shadow: 0 8px 30px rgba(255,107,107,0.6); }
+}
+
+.btn-favorite.favorited:hover {
+    background: linear-gradient(135deg, #ff5252 0%, #ff6b6b 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255,107,107,0.5);
+}
+
 /* ================= CHAPTER ================= */
 .chapter-section {
     max-width: 1100px;
@@ -143,6 +184,7 @@ body { font-family: 'Inter', sans-serif; }
 }
 </style>
 @endpush
+
 @section('content') 
 <!-- HERO -->
 <section class="novel-hero">
@@ -168,12 +210,14 @@ body { font-family: 'Inter', sans-serif; }
                 <a href="{{ route('user.novel.read', $novel->id) }}" class="btn-baca">▶ Baca</a>
 
                 @auth
-                <form action="{{ route('favorite.toggle', $novel->id) }}" method="POST">
+                <form action="{{ route('favorite.toggle', $novel->id) }}" method="POST" style="display: inline;">
                     @csrf
-                    <button class="btn btn-outline-light">❤️ Favorite</button>
+                    <button type="submit" class="btn-favorite {{ Auth::user()->favorites->contains($novel->id) ? 'favorited' : '' }}">
+                        {{ Auth::user()->favorites->contains($novel->id) ? '❤️ Favorited' : '❤️ Favorite' }}
+                    </button>
                 </form>
                 @else
-                <a href="{{ route('login') }}" class="btn btn-outline-light">❤️ Favorite</a>
+                <a href="{{ route('login') }}" class="btn-favorite">❤️ Favorite</a>
                 @endauth
 
                 <a href="{{ route('user.home') }}" class="btn btn-outline-light">← Kembali</a>
@@ -240,10 +284,10 @@ body { font-family: 'Inter', sans-serif; }
                         <div class="review-actions">
                             👍 <span>0</span>
                             <form action="{{ route('review.delete', $review->id) }}" method="POST"
-                                  onsubmit="return confirm('Hapus ulasan ini?')">
+                                  onsubmit="return confirm('Hapus ulasan ini?')" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button style="background:none;border:none;color:red;cursor:pointer;">🗑</button>
+                                <button type="submit" style="background:none;border:none;color:red;cursor:pointer;font-size:14px;">🗑</button>
                             </form>
                         </div>
                     </div>
