@@ -2,37 +2,26 @@
 
 @section('title', $novel->title)
 
-@section('content')
-
+@push('styles')
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: #0e0e0e;
-    margin: 0;
-}
+body { font-family: 'Inter', sans-serif; }
 
 /* ================= HERO ================= */
 .novel-hero {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 70vh;
     background: url('{{ asset('storage/' . $novel->cover) }}') center/cover no-repeat;
     display: flex;
     align-items: center;
-    padding: 60px;
+    padding: 60px 20px;
 }
 
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to right,
-        rgba(0,0,0,0.92) 30%,
-        rgba(0,0,0,0.6) 60%,
-        rgba(0,0,0,0.25)
-    );
+    background: linear-gradient(to right, rgba(0,0,0,0.92) 30%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.25));
     backdrop-filter: blur(6px);
     z-index: 1;
 }
@@ -45,18 +34,17 @@ body {
     max-width: 1400px;
     width: 100%;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-/* ================= COVER ================= */
 .hero-cover img {
-    width: 240px;
+    width: 180px;
     border-radius: 14px;
     box-shadow: 0 30px 60px rgba(0,0,0,.85);
 }
 
-/* ================= INFO ================= */
 .hero-info h1 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 12px;
     color: #fff;
@@ -70,22 +58,23 @@ body {
     margin-bottom: 20px;
 }
 
-/* ================= META ================= */
 .novel-meta span {
     background: rgba(30,30,30,.8);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 13px;
     margin-right: 6px;
+    margin-bottom: 6px;
+    display: inline-block;
     color: #fff;
 }
 
-/* ================= ACTION ================= */
 .hero-actions {
     margin-top: 24px;
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .btn-baca {
@@ -93,37 +82,10 @@ body {
     padding: 12px 30px;
     font-weight: 600;
     border-radius: 6px;
-    color: #fff;
+    color: #fff !important;
     text-decoration: none;
 }
-
-.btn-baca:hover {
-    background: #5a32c2;
-}
-
-/* ================= FAVORITE ================= */
-.btn-favorite {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: rgba(30,30,30,.85);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 18px;
-    transition: all .3s;
-}
-
-.btn-favorite.active {
-    background: #ff3b5c;
-    color: #fff;
-}
-
-.btn-favorite:hover {
-    transform: scale(1.05);
-}
+.btn-baca:hover { background: #5a32c2; }
 
 /* ================= CHAPTER ================= */
 .chapter-section {
@@ -132,191 +94,97 @@ body {
     padding: 50px 20px;
     color: #fff;
 }
-
 .chapter-list li {
     border-bottom: 1px solid #2a2a2a;
     padding: 14px 0;
 }
-
-.chapter-list a {
-    color: #ddd;
-    text-decoration: none;
-}
-
-.chapter-list a:hover {
-    color: #7c4dff;
-}
+.chapter-list a { color: #ddd; text-decoration: none; }
+.chapter-list a:hover { color: #7c4dff; }
 
 /* ================= REVIEW ================= */
-.review-section {
-    background: #111;
-    padding: 60px 20px;
-}
-
-.review-container {
-    max-width: 900px;
-    margin: auto;
-    color: #fff;
-}
-
-/* FORM */
+.review-section { background: #111; padding: 60px 20px; }
+.review-container { max-width: 900px; margin: auto; color: #fff; }
 .review-form {
     background: #1a1a1a;
     padding: 20px;
     border-radius: 12px;
 }
-
-.review-form textarea,
-.review-form select {
+.review-form textarea, .review-form select {
     background: #0e0e0e;
     border: 1px solid #333;
     color: #fff;
 }
-
-.review-form textarea:focus,
-.review-form select:focus {
+.review-form textarea:focus, .review-form select:focus {
     border-color: #7c4dff;
     box-shadow: none;
 }
-
-/* CARD */
-.review-card {
-    background: #1a1a1a;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    transition: 0.3s;
-}
-
-.review-card:hover {
-    transform: translateY(-3px);
-    background: #202020;
-}
-
-/* HEADER */
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
-}
-
-/* RATING */
-.review-rating {
-    color: gold;
-}
-
-/* COMMENT */
-.review-comment {
-    color: #ccc;
-    font-size: 14px;
-}
-/* ===== REVIEW STYLE UPGRADE ===== */
 .review-item {
     display: flex;
     gap: 15px;
     padding: 15px 0;
     border-bottom: 1px solid #2a2a2a;
 }
+.review-avatar img { width: 45px; height: 45px; border-radius: 50%; }
+.review-content { flex: 1; }
+.review-user { color: #fff; font-size: 14px; }
+.review-stars { color: orange; font-size: 13px; }
+.review-text { color: #ccc; font-size: 14px; margin: 6px 0; }
+.review-footer { display: flex; justify-content: space-between; font-size: 12px; color: #888; }
+.review-actions { display: flex; gap: 12px; cursor: pointer; align-items: center; }
 
-.review-avatar img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-}
-
-.review-content {
-    flex: 1;
-}
-
-/* USER */
-.review-user {
-    color: #fff;
-    font-size: 14px;
-}
-
-/* STARS */
-.review-stars {
-    color: orange;
-    font-size: 13px;
-}
-
-/* TEXT */
-.review-text {
-    color: #ccc;
-    font-size: 14px;
-    margin: 6px 0;
-}
-
-/* FOOTER */
-.review-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #888;
-}
-
-.review-actions {
-    display: flex;
-    gap: 12px;
-    cursor: pointer;
-}
-
-.review-actions span {
-    margin-left: 4px;
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .novel-hero { padding: 30px 16px; min-height: auto; }
+    .hero-content { gap: 20px; }
+    .hero-cover img { width: 120px; }
+    .hero-info h1 { font-size: 1.4rem; }
+    .hero-synopsis { font-size: 13px; }
+    .chapter-section { padding: 30px 16px; }
 }
 </style>
-
-<!-- ================= HERO ================= -->
+@endpush
+@section('content') 
+<!-- HERO -->
 <section class="novel-hero">
     <div class="hero-overlay"></div>
-
     <div class="hero-content">
         <div class="hero-cover">
             <img src="{{ asset('storage/' . $novel->cover) }}">
         </div>
-
         <div class="hero-info">
             <h1>{{ $novel->title }}</h1>
-
             <p class="hero-synopsis">{{ $novel->synopsis }}</p>
-
             <div class="novel-meta mb-3">
-                <span>{{ $novel->category->name ?? 'Unknown Genre' }}</span>
+                @if($novel->categories->count())
+                    @foreach($novel->categories as $cat)
+                        <span>{{ $cat->name }}</span>
+                    @endforeach
+                @else
+                    <span>{{ $novel->category->name ?? 'Unknown Genre' }}</span>
+                @endif
                 <span>Author: {{ $novel->author->name ?? '-' }}</span>
             </div>
-
             <div class="hero-actions">
-                <a href="{{ route('user.novel.read', $novel->id) }}" class="btn-baca">
-                    ▶ Baca
-                </a>
+                <a href="{{ route('user.novel.read', $novel->id) }}" class="btn-baca">▶ Baca</a>
 
-                {{-- FAVORITE (AMAN TANPA LOGIN ROUTE) --}}
-               @auth
-<form action="{{ route('favorite.toggle', $novel->id) }}" method="POST">
-    @csrf
-    <button class="btn btn-outline-light">
-        ❤️ Favorite 
-    </button>
-</form>
-@else
-<a href="{{ route('login') }}" class="btn btn-outline-light">
-    ❤️ Favorite
-</a>
-@endauth
+                @auth
+                <form action="{{ route('favorite.toggle', $novel->id) }}" method="POST">
+                    @csrf
+                    <button class="btn btn-outline-light">❤️ Favorite</button>
+                </form>
+                @else
+                <a href="{{ route('login') }}" class="btn btn-outline-light">❤️ Favorite</a>
+                @endauth
 
-
-                <a href="{{ route('user.home') }}" class="btn btn-outline-light">
-                    ← Kembali
-                </a>
+                <a href="{{ route('user.home') }}" class="btn btn-outline-light">← Kembali</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ================= CHAPTER ================= -->
+<!-- CHAPTER -->
 <section class="chapter-section">
     <h4>Daftar Chapter</h4>
-
     <ul class="list-unstyled chapter-list">
         @foreach ($novel->chapters->sortBy('chapter_number') as $chapter)
             <li>
@@ -327,20 +195,17 @@ body {
         @endforeach
     </ul>
 </section>
-<!-- ================= REVIEW ================= -->
-<section class="review-section">
 
+<!-- REVIEW -->
+<section class="review-section">
     <div class="review-container">
         <h4 class="mb-4">Ulasan & Rating</h4>
 
-        {{-- FORM --}}
         @auth
         <form action="{{ route('review.store') }}" method="POST" class="review-form">
             @csrf
-
             <input type="hidden" name="novel_id" value="{{ $novel->id }}">
-
-            <div class="rating-box mb-3">
+            <div class="mb-3">
                 <label>Rating:</label>
                 <select name="rating" class="form-select">
                     <option value="5">⭐⭐⭐⭐⭐ (5)</option>
@@ -350,85 +215,44 @@ body {
                     <option value="1">⭐ (1)</option>
                 </select>
             </div>
-
-            <textarea name="comment"
-                      class="form-control mb-3"
-                      rows="3"
+            <textarea name="comment" class="form-control mb-3" rows="3"
                       placeholder="Tulis ulasan kamu..."></textarea>
-
-            <button class="btn btn-primary btn-sm">
-                Kirim Ulasan
-            </button>
+            <button class="btn btn-primary btn-sm">Kirim Ulasan</button>
         </form>
         @else
-            <p class="text-muted">
-                Silakan <a href="{{ route('login') }}">login</a> untuk memberi ulasan.
-            </p>
+            <p class="text-muted">Silakan <a href="{{ route('login') }}">login</a> untuk memberi ulasan.</p>
         @endauth
 
-        {{-- LIST REVIEW --}}
-       <div class="review-list mt-4">
-
-@forelse ($novel->reviews->where('is_manual', true) as $review)        <div class="review-item">
-
-            {{-- AVATAR --}}
-            <div class="review-avatar">
-                <img src="https://ui-avatars.com/api/?name={{ $review->user->name }}&background=7c4dff&color=fff">
-            </div>
-
-            {{-- CONTENT --}}
-            <div class="review-content">
-
-                {{-- HEADER --}}
-                <div class="review-top">
-                    <div>
-                        <strong class="review-user">
-                            {{ $review->user->name }}
-                        </strong>
-
-                        <div class="review-stars">
-                            {{ str_repeat('⭐', $review->rating) }}
+        <div class="review-list mt-4">
+            @forelse ($novel->reviews->where('is_manual', true) as $review)
+            <div class="review-item">
+                <div class="review-avatar">
+                    <img src="https://ui-avatars.com/api/?name={{ $review->user->name }}&background=7c4dff&color=fff">
+                </div>
+                <div class="review-content">
+                    <div class="review-top">
+                        <strong class="review-user">{{ $review->user->name }}</strong>
+                        <div class="review-stars">{{ str_repeat('⭐', $review->rating) }}</div>
+                    </div>
+                    <p class="review-text">{{ $review->comment }}</p>
+                    <div class="review-footer">
+                        <span>{{ $review->created_at->diffForHumans() }}</span>
+                        <div class="review-actions">
+                            👍 <span>0</span>
+                            <form action="{{ route('review.delete', $review->id) }}" method="POST"
+                                  onsubmit="return confirm('Hapus ulasan ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button style="background:none;border:none;color:red;cursor:pointer;">🗑</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                {{-- COMMENT --}}
-                <p class="review-text">
-                    {{ $review->comment }}
-                </p>
-
-                {{-- FOOTER --}}
-                <div class="review-footer">
-                    <span class="review-time">
-                        {{ $review->created_at->diffForHumans() }}
-                    </span>
-
-                    <div class="review-actions">
-
-    👍 <span>0</span>
-    💬
-
-    {{-- TOMBOL HAPUS --}}
-    <form action="{{ route('review.delete', $review->id) }}" method="POST"
-          onsubmit="return confirm('Hapus ulasan ini?')">
-        @csrf
-        @method('DELETE')
-        <button style="background:none;border:none;color:red;cursor:pointer;">
-            🗑
-        </button>
-    </form>
-
-</div>
-                </div>
-
             </div>
+            @empty
+                <p class="text-muted">Belum ada ulasan.</p>
+            @endforelse
         </div>
-    @empty
-        <p class="text-muted">Belum ada ulasan.</p>
-    @endforelse
-
-</div>
-
+    </div>
 </section>
-
 @endsection

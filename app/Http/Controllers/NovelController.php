@@ -26,47 +26,61 @@ class NovelController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'title'       => 'required|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'author_id'   => 'required|exists:authors,id',
-            'status'      => 'required',
-            'synopsis'    => 'required',
-            'content'     => 'nullable',
-            'cover'       => 'nullable|image|max:2048',
+{
+    $data = $request->validate([
+        'title'       => 'required|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'author_id'   => 'required|exists:authors,id',
+        'status'      => 'required',
+        'synopsis'    => 'required',
+        'content'     => 'nullable',
+        'cover'       => 'nullable|image|max:2048',
 
-            // 🔥 tambahan (tidak wajib)
-            'category_ids' => 'nullable|array',
-            'category_ids.*' => 'exists:categories,id',
-        ]);
+        // tetap ada
+        'category_ids' => 'nullable|array',
+        'category_ids.*' => 'exists:categories,id',
+    ]);
 
-        if ($request->hasFile('cover')) {
-            $data['cover'] = $request->file('cover')->store('novels', 'public');
-        }
-
-        $data['views'] = 0;
-        $data['likes'] = 0;
-
-        // 🔥 simpan novel
-        $novel = Novel::create($data);
-
-        // 🔥 simpan multi genre
-        if ($request->has('category_ids')) {
-            $novel->categories()->attach($request->category_ids);
-        }
-
-        return redirect()->route('admin.novel.index')
-            ->with('success', 'Novel berhasil ditambahkan');
+    if ($request->hasFile('cover')) {
+        $data['cover'] = $request->file('cover')->store('novels', 'public');
     }
+
+    $data['views'] = 0;
+    $data['likes'] = 0;
+
+    // 🔥 simpan novel
+    $novel = Novel::create($data);
+
+    // 🔥 FIX MULTI GENRE (GABUNG)
+    $categories = [];
+
+    if ($request->category_id) {
+        $categories[] = $request->category_id;
+    }
+
+    if ($request->has('category_ids')) {
+        $categories = array_merge($categories, $request->category_ids);
+    }
+
+    $categories = array_unique($categories);
+
+    $novel->categories()->sync($categories);
+
+    return redirect()->route('admin.novel.index')
+        ->with('success', 'Novel berhasil ditambahkan');
+}
 
     public function show(Novel $novel)
-    {
-        // 🔥 load multi genre
-        $novel->load('categories');
+{
+    // 🔥 TAMBAHAN (WAJIB BIAR GA ERROR)
+    $categories = Category::all();
+    $authors = Author::all();
 
-        return view('admin.novel.show', compact('novel'));
-    }
+    // 🔥 load multi genre
+    $novel->load('categories');
+
+    return view('admin.novel.show', compact('novel', 'categories', 'authors'));
+}
 
     public function edit(Novel $novel)
     {
@@ -80,41 +94,45 @@ class NovelController extends Controller
     }
 
     public function update(Request $request, Novel $novel)
-    {
-        $data = $request->validate([
-            'title'       => 'required|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'author_id'   => 'required|exists:authors,id',
-            'status'      => 'required',
-            'synopsis'    => 'required',
-            'content'     => 'nullable',
-            'cover'       => 'nullable|image|max:2048',
+{
+    $data = $request->validate([
+        'title'       => 'required|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'author_id'   => 'required|exists:authors,id',
+        'status'      => 'required',
+        'synopsis'    => 'required',
+        'content'     => 'nullable',
+        'cover'       => 'nullable|image|max:2048',
 
-            // 🔥 tambahan
-            'category_ids' => 'nullable|array',
-            'category_ids.*' => 'exists:categories,id',
-        ]);
+        'category_ids' => 'nullable|array',
+        'category_ids.*' => 'exists:categories,id',
+    ]);
 
-        if ($request->hasFile('cover')) {
-            Storage::disk('public')->delete($novel->cover);
-            $data['cover'] = $request->file('cover')->store('novels', 'public');
-        }
-
-        // 🔥 update data utama
-        $novel->update($data);
-
-        // 🔥 update multi genre
-        if ($request->has('category_ids')) {
-            $novel->categories()->sync($request->category_ids);
-        } else {
-            // kalau tidak ada dipilih, kosongkan
-            $novel->categories()->sync([]);
-        }
-
-        return redirect()->route('admin.novel.index')
-            ->with('success', 'Novel berhasil diperbarui');
+    if ($request->hasFile('cover')) {
+        Storage::disk('public')->delete($novel->cover);
+        $data['cover'] = $request->file('cover')->store('novels', 'public');
     }
 
+    $novel->update($data);
+
+    // 🔥 FIX MULTI GENRE
+    $categories = [];
+
+    if ($request->category_id) {
+        $categories[] = $request->category_id;
+    }
+
+    if ($request->has('category_ids')) {
+        $categories = array_merge($categories, $request->category_ids);
+    }
+
+    $categories = array_unique($categories);
+
+    $novel->categories()->sync($categories);
+
+    return redirect()->route('admin.novel.index')
+        ->with('success', 'Novel berhasil diperbarui');
+}
     public function destroy(Novel $novel)
     {
         Storage::disk('public')->delete($novel->cover);
