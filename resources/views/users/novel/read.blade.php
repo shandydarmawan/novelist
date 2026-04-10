@@ -203,9 +203,8 @@ body { font-family: 'Inter', sans-serif; background: #0f0f0f; }
 
     </div>
 </div>
-
 <!-- NAVIGASI MODERN -->
-<div class="chapter-nav-modern">
+<div id="chapterNav" class="chapter-nav-modern" style="opacity:0;pointer-events:none;transition:.3s;">
 
     @if ($prev)
     <a href="{{ route('user.novel.read', [$novel->id, $prev->id]) }}" class="nav-circle">‹</a>
@@ -235,6 +234,7 @@ body { font-family: 'Inter', sans-serif; background: #0f0f0f; }
     @endforeach
 </div>
 
+
 @endsection
 
 @push('scripts')
@@ -244,6 +244,75 @@ function toggleChapterList() {
     box.style.display = box.style.display === 'block' ? 'none' : 'block';
 }
 
+const nav = document.getElementById('chapterNav');
+
+// 🔥 AUTO SHOW NAV SAAT SCROLL KE BAWAH (80%)
+window.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const docHeight = document.body.scrollHeight;
+
+    if (scrollTop + windowHeight >= docHeight * 0.8) {
+        nav.style.opacity = "1";
+        nav.style.pointerEvents = "auto";
+    } else {
+        // Jika tidak di akhir, cek apakah sedang tap mode
+        checkTapMode();
+    }
+});
+
+// 🔥 TAP/CLICK UNTUK SHOW NAV DIMANA SAJA
+let tapTimeout;
+let isTapMode = false;
+
+document.addEventListener('click', function(e) {
+    // Ignore clicks on nav elements
+    if (e.target.closest('.chapter-nav-modern') || e.target.closest('.chapter-list-box')) {
+        return;
+    }
+    
+    // Single tap detection
+    clearTimeout(tapTimeout);
+    tapTimeout = setTimeout(() => {
+        showNavWithTimeout();
+    }, 200);
+});
+
+document.addEventListener('touchend', function(e) {
+    // Mobile touch support
+    if (e.target.closest('.chapter-nav-modern') || e.target.closest('.chapter-list-box')) {
+        return;
+    }
+    
+    clearTimeout(tapTimeout);
+    tapTimeout = setTimeout(() => {
+        showNavWithTimeout();
+    }, 200);
+});
+
+function showNavWithTimeout() {
+    nav.style.opacity = "1";
+    nav.style.pointerEvents = "auto";
+    isTapMode = true;
+    
+    // Auto hide after 5 seconds
+    setTimeout(() => {
+        if (isTapMode) {
+            nav.style.opacity = "0";
+            nav.style.pointerEvents = "none";
+            isTapMode = false;
+        }
+    }, 5000);
+}
+
+function checkTapMode() {
+    if (!isTapMode) {
+        nav.style.opacity = "0";
+        nav.style.pointerEvents = "none";
+    }
+}
+
+// 🔥 CLOSE LIST JIKA KLIK LUAR
 document.addEventListener('click', function(e){
     const box = document.getElementById('chapterListBox');
     if (!e.target.closest('.chapter-list-box') && !e.target.closest('.nav-circle')) {
@@ -252,3 +321,4 @@ document.addEventListener('click', function(e){
 });
 </script>
 @endpush
+
