@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login | Novelist</title>
+    <title>Register | Novelist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{{ asset('users/css/bootstrap.min.css') }}">
@@ -12,79 +12,84 @@
         body {
             margin: 0;
             height: 100vh;
-            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            background: radial-gradient(circle at top, #1a1a2e, #0f0f0f);
             font-family: 'Poppins', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #fff;
         }
 
-        .login-box {
+        .register-box {
             width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 20px;
-            background: #ffffff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            max-width: 380px;
+            padding: 40px 35px;
+            border-radius: 16px;
+            background: rgba(20,20,20,0.85);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(124,77,255,0.15);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .login-box h3 {
+        .register-box h3 {
             text-align: center;
             font-weight: 700;
             margin-bottom: 25px;
-            color: #2d3748;
+            color: #fff;
         }
 
         .form-control {
-            border-radius: 12px;
-            padding: 14px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 15px;
-            transition: 0.3s;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
         }
 
         .form-control:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            border-color: #7c4dff;
+            box-shadow: 0 0 0 2px rgba(124,77,255,0.2);
+            background: #111;
+            color: #fff;
         }
 
         .btn-primary {
             width: 100%;
-            border-radius: 12px;
-            padding: 14px;
+            border-radius: 10px;
+            padding: 12px;
             border: none;
             font-weight: 600;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            transition: 0.3s;
+            background: linear-gradient(135deg, #7c4dff, #5a32c2);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99,102,241,0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(124,77,255,0.3);
+        }
+
+        .alert {
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         .text-center small {
-            color: #6b7280;
+            color: #aaa;
         }
 
         a {
-            color: #4f46e5;
-            font-weight: 500;
+            color: #7c4dff;
         }
 
         a:hover {
             text-decoration: underline;
         }
-
-        .alert {
-            border-radius: 10px;
-        }
     </style>
 </head>
 <body>
 
-<div class="login-box">
-    <h3>Login Novelist</h3>
+<div class="register-box">
+    <h3>Daftar Novelist</h3>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -92,25 +97,24 @@
         </div>
     @endif
 
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('register') }}" method="POST">
         @csrf
 
+        <input type="text" name="name" class="form-control" placeholder="Nama" required>
         <input type="email" name="email" class="form-control" placeholder="Email" required>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
+        <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password" required>
 
         <button type="submit" class="btn btn-primary">
-            Login
+            Register
         </button>
     </form>
 
     <div class="text-center mt-4">
-        <small>Belum punya akun?</small><br>
-        <a href="{{ route('register') }}">Daftar sekarang</a>
+        <small>Sudah punya akun?</small><br>
+        <a href="{{ route('login') }}">Login sekarang</a>
     </div>
 </div>
 
-<script src="{{ asset('users/js/jquery-3.3.1.min.js') }}"></script>
-<script src="{{ asset('users/js/bootstrap.min.js') }}"></script>
-
 </body>
-</html> 
+</html>
