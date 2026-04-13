@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\ReadHistory; // 🔥 TAMBAHAN
+use App\Models\ReadingHistory;
+use App\Models\Readlist; // 🔥 TAMBAHAN
 
 class LibraryController extends Controller
 {
@@ -11,10 +12,10 @@ class LibraryController extends Controller
     {
         $user = Auth::user();
 
-        // 🔥 HISTORY (TAMBAHAN)
+        // 🔥 HISTORY
         if ($tab === 'history') {
 
-            $histories = ReadHistory::with(['novel', 'chapter'])
+            $histories = ReadingHistory::with(['novel', 'chapter'])
                 ->where('user_id', $user->id)
                 ->latest()
                 ->get();
@@ -26,12 +27,17 @@ class LibraryController extends Controller
             ]);
         }
 
-        // 🔥 READLIST (tetap kosong)
+        // 🔥 READLIST (SUDAH AKTIF)
         elseif ($tab === 'readlist') {
-            $novels = collect();
+
+            $novels = Readlist::with('novel')
+                ->where('user_id', $user->id)
+                ->latest()
+                ->get()
+                ->pluck('novel'); // 🔥 ambil data novel saja
         }
 
-        // 🔥 BOOKMARK (punya kamu, tidak diubah)
+        // 🔥 BOOKMARK
         else {
             $novels = $user->favorites()->latest()->get();
         }
@@ -39,7 +45,7 @@ class LibraryController extends Controller
         return view('users.library', [
             'novels' => $novels,
             'tab' => $tab,
-            'histories' => collect() // biar tidak error
+            'histories' => collect()
         ]);
     }
 }

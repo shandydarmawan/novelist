@@ -103,6 +103,18 @@
                 <span class="menu-title">Tambah Kategori</span>
             </a>
         </li>
+        <li class="nav-item nav-category">
+    <span class="nav-link">User Activity</span>
+</li>
+
+<li class="nav-item menu-items">
+    <a class="nav-link" href="{{ route('admin.history.index') }}">
+        <span class="menu-icon">
+            <i class="mdi mdi-history"></i>
+        </span>
+        <span class="menu-title">Reading History</span>
+    </a>
+</li>
 
     </ul>
 </nav>

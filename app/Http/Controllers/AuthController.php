@@ -14,28 +14,30 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required','email'],
-            'password' => ['required'],
-        ]);
+  public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => ['required','email'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            
-            // 🔥 redirect sesuai role
-            if (Auth::user()->role === 'admin') {
-                return redirect('/admin/novel');
-            }
-            
-            return redirect('/');
+    // logout user lama saja (tanpa hancurin session)
+    Auth::logout();
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('admin.novel.index');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah',
-        ]);
+        return redirect()->route('user.home');
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+}
 
     public function registerForm()
     {

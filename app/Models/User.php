@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // ✅ TAMBAHAN
-use App\Models\Novel;
-use App\Models\Favorite;
-use App\Models\Comment;
-use App\Models\Review;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable; // ✅ DIGABUNG (WAJIB)
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -31,7 +27,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
@@ -40,20 +36,45 @@ class User extends Authenticatable
         return $this->hasMany(Novel::class, 'author_id');
     }
 
+    // ── FAVORITES (Bookmark) ──────────────────────────────
     public function favorites()
     {
         return $this->belongsToMany(
-            \App\Models\Novel::class,
-            'favorites'
+            Novel::class,
+            'favorites',
+            'user_id',
+            'novel_id'
         )->withTimestamps();
+    }
+
+    // ── READLIST ──────────────────────────────────────────
+    public function readlist()
+    {
+        return $this->belongsToMany(
+            Novel::class,
+            'readlists',
+            'user_id',
+            'novel_id'
+        )->withTimestamps();
+    }
+
+    // ── READING HISTORY ───────────────────────────────────
+    public function readingHistories()
+    {
+        return $this->hasMany(ReadingHistory::class);
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
+
     public function reviews()
     {
-    return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
     }
+    public function readlists()
+{
+    return $this->hasMany(\App\Models\Readlist::class);
+}
 }

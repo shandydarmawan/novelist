@@ -138,32 +138,7 @@
                 <strong style="font-size:15px;letter-spacing:2px;color:#fff;">NOVELIST</strong>
             </a>
 
-            <!-- SEARCH LAPTOP: ikon saja, expand saat diklik -->
-            <div id="searchWrap" class="d-none d-lg-flex align-items-center ms-3"
-                 style="position:relative;">
-                <button id="searchToggle" type="button"
-                        style="background:none;border:none;cursor:pointer;padding:5px 7px;
-                               color:rgba(255,255,255,0.65);display:flex;align-items:center;
-                               border-radius:50%;transition:background .2s;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.08)'"
-                        onmouseout="this.style.background='none'">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2.2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                </button>
-                <form id="searchForm" action="{{ route('user.search') }}" method="GET"
-                      style="position:absolute;left:36px;top:50%;transform:translateY(-50%);
-                             width:0;overflow:hidden;transition:width .35s cubic-bezier(.4,0,.2,1);">
-                    <input id="searchInput" type="text" name="q"
-                           style="width:220px;background:rgba(255,255,255,0.07);color:#fff;
-                                  border:1px solid rgba(255,255,255,0.18);border-radius:20px;
-                                  padding:5px 14px;font-size:13px;outline:none;white-space:nowrap;"
-                           placeholder="Cari novel...">
-                </form>
-            </div>
+
 
             <!-- MENU LINKS -->
             <div class="collapse navbar-collapse" id="mainNav">
@@ -204,6 +179,32 @@
                     </li>
                     @endauth
                 </ul>
+                            <!-- SEARCH LAPTOP: ikon saja, expand saat diklik -->
+            <div id="searchWrap" class="d-none d-lg-flex align-items-center ms-3"
+                 style="position:relative;">
+                <button id="searchToggle" type="button"
+                        style="background:none;border:none;cursor:pointer;padding:5px 7px;
+                               color:rgba(255,255,255,0.65);display:flex;align-items:center;
+                               border-radius:50%;transition:background .2s;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                        onmouseout="this.style.background='none'">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </button>
+                <form id="searchForm" action="{{ route('user.search') }}" method="GET"
+                      style="position:absolute;left:36px;top:50%;transform:translateY(-50%);
+                             width:0;overflow:hidden;transition:width .35s cubic-bezier(.4,0,.2,1);">
+                    <input id="searchInput" type="text" name="q"
+                           style="width:220px;background:rgba(255,255,255,0.07);color:#fff;
+                                  border:1px solid rgba(255,255,255,0.18);border-radius:20px;
+                                  padding:5px 14px;font-size:13px;outline:none;white-space:nowrap;"
+                           placeholder="Cari novel...">
+                </form>
+            </div>
             </div>
 
             <!-- HAMBURGER (disembunyikan via CSS di HP) -->

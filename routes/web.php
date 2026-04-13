@@ -14,7 +14,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ReviewController;
-
+use App\Http\Controllers\Admin\ReadingHistoryController;
 /*
 |--------------------------------------------------------------------------
 | USER / FRONTEND
@@ -69,6 +69,9 @@ Route::get('/library/{tab?}', [LibraryController::class, 'index'])
     ->name('user.library')
     ->middleware('auth');
 
+    Route::post('/readlist/{novel}', [\App\Http\Controllers\ReadlistController::class, 'toggle'])
+    ->name('readlist.toggle')
+    ->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | FAVORITE
@@ -107,4 +110,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'isAdmin'])->group(f
     Route::resource('category', CategoryController::class);
     Route::resource('author', AuthorController::class);
     Route::resource('chapter', ChapterController::class);
+      Route::get('/reading-history', [ReadingHistoryController::class, 'index'])
+        ->name('history.index')
+        ;
+    
 });

@@ -182,6 +182,39 @@ body { font-family: 'Inter', sans-serif; }
     .hero-synopsis { font-size: 13px; }
     .chapter-section { padding: 30px 16px; }
 }
+/* 🔥 READLIST BUTTON */
+.btn-readlist {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: #fff !important;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-readlist:hover {
+    border-color: #facc15;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(250,204,21,0.3);
+}
+
+.btn-readlist.active {
+    background: linear-gradient(135deg, #facc15, #eab308);
+    border-color: #facc15;
+    color: #000 !important;
+    box-shadow: 0 8px 20px rgba(250,204,21,0.4);
+}
+.btn-readlist.active {
+    animation: pulse-read 1.5s infinite;
+}
+
+@keyframes pulse-read {
+    0%, 100% { box-shadow: 0 8px 20px rgba(250,204,21,0.4); }
+    50% { box-shadow: 0 8px 30px rgba(250,204,21,0.6); }
+}
 </style>
 @endpush
 
@@ -208,6 +241,15 @@ body { font-family: 'Inter', sans-serif; }
             </div>
             <div class="hero-actions">
                 <a href="{{ route('user.novel.read', $novel->id) }}" class="btn-baca">▶ Baca</a>
+                @auth<form action="{{ route('readlist.toggle', $novel->id) }}" method="POST" style="display:inline;">
+                @csrf
+<button class="btn-readlist {{ auth()->user()->readlists?->contains('novel_id', $novel->id) ? 'active' : '' }}">
+    {{ auth()->user()->readlists?->contains('novel_id', $novel->id) 
+        ? '📚 In Readlist' 
+        : '📖 Readlist' }}
+</button>
+                 </form>
+                @endauth
 
                 @auth
                 <form action="{{ route('favorite.toggle', $novel->id) }}" method="POST" style="display: inline;">

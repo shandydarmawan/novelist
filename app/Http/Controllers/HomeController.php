@@ -10,6 +10,11 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // 🔥 CEGAH ADMIN MASUK HALAMAN USER
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('admin.novel.index');
+        }
+
         // ambil novel + relasi
         $novels = Novel::with(['author', 'category'])
             ->latest()
@@ -26,6 +31,11 @@ class HomeController extends Controller
 
     public function explore()
     {
+        // 🔥 CEGAH ADMIN MASUK HALAMAN USER
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('admin.novel.index');
+        }
+
         $novels = Novel::with(['author', 'category'])
             ->latest('updated_at')
             ->get();
@@ -38,8 +48,14 @@ class HomeController extends Controller
     /* ===============================
        GENRE / CATEGORY
     =============================== */
+
     public function genre($slug)
     {
+        // 🔥 CEGAH ADMIN MASUK HALAMAN USER
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('admin.novel.index');
+        }
+
         $category = Category::where('slug', $slug)->firstOrFail();
 
         $novels = Novel::with(['author', 'category'])
