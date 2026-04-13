@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Novel;
 use App\Models\Chapter;
-use App\Models\ReadHistory; // ✅ cukup di atas saja
+use App\Models\ReadingHistory; // ✅ BENAR
 
 class UserNovelController extends Controller
 {
@@ -54,18 +54,19 @@ class UserNovelController extends Controller
             abort(404, 'Chapter belum tersedia');
         }
 
-        // 🔥 SIMPAN HISTORY
-        if (auth()->check()) {
-            ReadHistory::updateOrCreate(
-                [
-                    'user_id' => auth()->id(),
-                    'novel_id' => $novel->id
-                ],
-                [
-                    'chapter_id' => $chapter->id
-                ]
-            );
-        }
+     
+// 🔥 SIMPAN HISTORY
+if (auth()->check()) {
+    ReadingHistory::updateOrCreate(
+        [
+            'user_id' => auth()->id(),
+            'novel_id' => $novel->id
+        ],
+        [
+            'chapter_id' => $chapter->id
+        ]
+    );
+}
 
         $prev = $novel->chapters
             ->where('chapter_number', '<', $chapter->chapter_number)
