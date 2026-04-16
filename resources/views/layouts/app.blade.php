@@ -12,113 +12,197 @@
     <link rel="stylesheet" href="{{ asset('users/css/slicknav.min.css') }}">
     <link rel="stylesheet" href="{{ asset('users/css/style.css') }}">
 
-    <style>
-        body { background:#0b0c10; color:#fff; }
+   <style>
+/* ================= BASE ================= */
+body {
+    background:#0b0c10;
+    color:#fff;
+    transition: 0.3s;
+}
 
-        h1,h2,h3,h4,h5,h6,
-        .navbar-brand strong,
-        .nav-link { color:#ffffff !important; }
+h1,h2,h3,h4,h5,h6,
+.navbar-brand strong,
+.nav-link {
+    color:#ffffff !important;
+}
 
-        /* ACCOUNT MENU */
-        .account-menu {
-            position: absolute;
-            top: 48px; right: 0;
-            background: #151515;
-            border-radius: 10px;
-            width: 200px;
-            display: none;
-            z-index: 9999;
-            padding: 10px 0;
-        }
-        .account-menu.show { display: block; }
-        .account-name {
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #aaa;
-            border-bottom: 1px solid #222;
-        }
-        .account-link {
-            display: block;
-            padding: 10px 16px;
-            color: #fff;
-            text-decoration: none;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-        }
-        .account-link:hover { background: #222; }
-        .account-link.logout { color: #ff5b5b; }
+/* ================= ACCOUNT MENU ================= */
+.account-menu {
+    position: absolute;
+    top: 48px; right: 0;
+    background: #151515;
+    border-radius: 10px;
+    width: 200px;
+    display: none;
+    z-index: 9999;
+    padding: 10px 0;
+}
+.account-menu.show { display: block; }
 
-        .notice-login {
-            display: flex;
-            gap: 12px;
-            background: #151515;
-            border-left: 4px solid #7c4dff;
-            padding: 14px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #ddd;
-        }
+.account-name {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #aaa;
+    border-bottom: 1px solid #222;
+}
 
-        /* ── OVERRIDE style.css yang sembunyikan navbar di HP ── */
-        .slicknav_menu { display: none !important; }
+.account-link {
+    display: block;
+    padding: 10px 16px;
+    color: #fff;
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+.account-link:hover { background: #222; }
+.account-link.logout { color: #ff5b5b; }
 
-        .header {
-            background: #070720 !important;
-            position: sticky !important;
-            top: 0 !important;
-            z-index: 1030 !important;
-        }
+/* ================= NOTICE ================= */
+.notice-login {
+    display: flex;
+    gap: 12px;
+    background: #151515;
+    border-left: 4px solid #7c4dff;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #ddd;
+}
 
-        /* Search laptop */
-        .navbar-search-desktop { display: none; }
-        @media (min-width: 992px) {
-            .navbar-search-desktop { display: flex !important; }
-            .navbar-search-mobile  { display: none !important; }
-        }
+/* ================= HEADER ================= */
+.slicknav_menu { display: none !important; }
 
-        /* ── HP: semua menu langsung tampil tanpa hamburger ── */
-        @media (max-width: 991.98px) {
-            .navbar { flex-wrap: wrap !important; padding: 8px 0 !important; }
-            .navbar-toggler { display: none !important; }
-            .navbar-brand { order: 1; }
+.header {
+    background: #070720 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1030 !important;
+}
 
-            /* Search icon wrap di HP — sembunyikan, pakai search-mobile */
-            #searchWrap { display: none !important; }
+/* ================= SEARCH ================= */
+.navbar-search-desktop { display: none; }
 
-            #mainNav {
-                display: flex !important;
-                width: 100% !important;
-                order: 3;
-            }
-            .navbar-search-mobile {
-                display: block !important;
-                order: 2;
-                width: 100%;
-                margin: 6px 0 2px;
-            }
-            #mainNav .navbar-nav {
-                flex-direction: row !important;
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-                gap: 0 !important;
-                padding: 4px 0 4px !important;
-                width: 100% !important;
-            }
-            #mainNav .navbar-nav .nav-link {
-                padding: 6px 10px !important;
-                font-size: 13px !important;
-            }
-            #mainNav .position-relative { position: static !important; }
-            .account-menu {
-                position: static !important;
-                width: 100% !important;
-                border-radius: 8px !important;
-                margin-top: 4px !important;
-            }
-        }
-    </style>
+@media (min-width: 992px) {
+    .navbar-search-desktop { display: flex !important; }
+    .navbar-search-mobile  { display: none !important; }
+}
+
+/* ================= MOBILE FIX ================= */
+@media (max-width: 991.98px) {
+
+    .navbar {
+        flex-wrap: wrap !important;
+        padding: 8px 0 !important;
+    }
+
+    .navbar-toggler { display: none !important; }
+
+    .navbar-brand { order: 1; }
+
+    #searchWrap { display: none !important; }
+
+    #mainNav {
+        display: flex !important;
+        width: 100% !important;
+        order: 3;
+    }
+
+    .navbar-search-mobile {
+        display: block !important;
+        order: 2;
+        width: 100%;
+        margin: 6px 0 2px;
+    }
+
+    #mainNav .navbar-nav {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    #mainNav .nav-link {
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+    }
+
+    .account-menu {
+        position: static !important;
+        width: 100% !important;
+        margin-top: 4px;
+    }
+}
+
+/* ================= COMPONENT ================= */
+.card, .table {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: #7c4dff;
+    border: none;
+}
+
+/* ================= LIGHT MODE (OPTIONAL) ================= */
+body.light-mode {
+    background: #f4f6f9;
+    color: #1a1a1a;
+}
+
+body.light-mode .card,
+body.light-mode .table,
+body.light-mode .navbar {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+/* ================= TOGGLE SWITCH ================= */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input { display: none; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 25px;
+    inset: 0;
+    transition: 0.4s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #7c4dff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+</style>
 
     @stack('styles')
 </head>

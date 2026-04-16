@@ -215,6 +215,14 @@ body { font-family: 'Inter', sans-serif; }
     0%, 100% { box-shadow: 0 8px 20px rgba(250,204,21,0.4); }
     50% { box-shadow: 0 8px 30px rgba(250,204,21,0.6); }
 }
+.hero-overlay {
+    background: linear-gradient(
+        to right, 
+        rgba(0,0,0,0.95) 30%, 
+        rgba(0,0,0,0.7) 60%, 
+        rgba(0,0,0,0.4)
+    );
+}
 </style>
 @endpush
 

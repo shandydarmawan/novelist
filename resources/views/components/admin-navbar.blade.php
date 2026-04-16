@@ -25,28 +25,42 @@
         </ul>
 
         {{-- Right Menu --}}
-        <ul class="navbar-nav navbar-nav-right">
+      {{-- Right Menu --}}
+<ul class="navbar-nav navbar-nav-right">
 
-            {{-- Admin Name --}}
-            <li class="nav-item d-none d-lg-block">
-                <span class="nav-link text-light">
-                    👤 Admin Novelist
-                </span>
-            </li>
+    {{-- 🌗 Toggle Theme --}}
+    <li class="nav-item d-flex align-items-center mr-3">
+    <button id="toggleTheme" class="btn btn-sm btn-dark">
+        🌙
+    </button>
+</li>
 
-            {{-- Logout (optional) --}}
-            <li class="nav-item">
-                <a class="nav-link" href="#" title="Logout">
-                    <i class="mdi mdi-logout text-danger"></i>
-                </a>
-            </li>
+    {{-- Admin Name --}}
+    <li class="nav-item d-none d-lg-block">
+        <span class="nav-link text-light">
+            👤 Admin Novelist
+        </span>
+    </li>
 
-            {{-- Offcanvas --}}
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-                    type="button" data-toggle="offcanvas">
-                <span class="mdi mdi-format-line-spacing"></span>
-            </button>
-        </ul>
+    {{-- Logout --}}
+    <li class="nav-item">
+    <a class="nav-link" href="#"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="mdi mdi-logout text-danger"></i>
+    </a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+</li>
+
+    {{-- Offcanvas --}}
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+            type="button" data-toggle="offcanvas">
+        <span class="mdi mdi-format-line-spacing"></span>
+    </button>
+
+</ul>
 
     </div>
 </nav>
